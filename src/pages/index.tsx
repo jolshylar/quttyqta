@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
+import Image from "next/image";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
@@ -13,16 +14,23 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
+        {session && (
+          <Image
+            src={session?.user?.image as string}
+            alt="profile picture"
+            width={100}
+            height={100}
+          />
+        )}
+        <h1 className="text-5xl leading-normal font-extrabold text-gray-700">
           Hello,{" "}
           <span className="text-purple-300">
             {session?.user?.name || "Stranger"}
           </span>
-          !
         </h1>
         {!session && (
           <button
-            className="px-2 py-1 text-gray-100 text-2xl bg-purple-300 rounded-xl"
+            className="px-2 py-1 text-gray-100 text-3xl bg-purple-300 rounded-xl"
             onClick={() => signIn()}
           >
             Sign In
